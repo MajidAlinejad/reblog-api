@@ -57,4 +57,33 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
+
+
+
+    public function posts()
+    {
+        return $this->hasMany('App\Models\Post');
+    }
+
+    public function comments()
+    {
+        return $this->hasMany('App\Models\Comment');
+    }
+
+
+    public function saves()
+    {
+        return $this->hasMany('App\Models\Save');
+    }
+
+    public function likes()
+    {
+        return $this->hasMany('App\Models\Like');
+    }
 }
