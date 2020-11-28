@@ -3,6 +3,9 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
             <div class="flex">
+                <div onclick="sideTg()" class="flex-shrink-0 flex items-center p-4 cursor-pointer hover:text-teal-500">
+                    <ion-icon   name="menu-outline" size="large"></ion-icon>
+                </div>
                 <!-- Logo -->
                 <div class="flex-shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}">
@@ -11,7 +14,7 @@
                 </div>
 
                 <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                <div class="hidden space-x-8 sm:-my-px sm:mr-10 sm:ml-10 sm:flex">
                     <x-jet-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-jet-nav-link>
@@ -19,8 +22,8 @@
             </div>
 
             <!-- Settings Dropdown -->
-            <div class="hidden sm:flex sm:items-center sm:ml-6">
-                <x-jet-dropdown align="right" width="48">
+            <div class="hidden sm:flex sm:items-center sm:mr-6">
+                <x-jet-dropdown align="left" width="48">
                     <x-slot name="trigger">
                         @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
                             <button class="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition duration-150 ease-in-out">

@@ -1,0 +1,103 @@
+aside.sidebar {
+    height: 100vh;
+    position: absolute;
+    z-index: 10;
+    top: 0;
+    width: 270px;
+    transform: translateX(-270px);
+    left: 0;
+    transition: transform 0.2s;
+    /* padding: 20px; */
+}
+
+body[dir='rtl'] aside.sidebar {
+    height: 100vh;
+    position: absolute;
+    z-index: 10;
+    top: 0;
+    width: 270px;
+    transform: translateX(+270px);
+    left: inherit;
+    right: 0;
+    transition: transform 0.2s;
+    /* padding: 20px; */
+}
+
+
+body.draw {
+    overflow: hidden;
+}
+
+
+body.draw #aside {
+    transform: translateX(0);
+
+    transition: transform 0.2s;
+}
+
+
+
+.overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: #00000062;
+    z-index: -9;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease-out;
+}
+
+
+
+body.draw .overlay {
+    z-index: 1;
+    visibility: visible;
+    opacity: 1;
+    transition: opacity 0.3s ease-in;
+}
+
+.close-icon {
+    position: absolute;
+    right: 0;
+    top: 0;
+    left: auto;
+    padding: 12px;
+}
+
+
+body[dir='rtl'] .close-icon {
+    position: absolute;
+    left: 0;
+    right: auto;
+    top: 0;
+    padding: 12px;
+}
+
+.link-ul {
+    margin-top: 5px;
+}
+
+.link-ul li {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-right: 10px;
+    margin-top: 5px;
+    padding-left: 20px;
+    /* border-left: 4px solid rgb(192, 51, 145); */
+}
+
+.link-ul li>a {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    width: 100%;
+    padding-right: 10px;
+    /* border-left: 4px solid rgb(192, 51, 145); */
+}
+
+
+.link-ul li:hover {
+    border-left: 4px solid rgb(76, 66, 224);
+}

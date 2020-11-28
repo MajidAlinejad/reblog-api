@@ -1,5 +1,4 @@
 const defaultTheme = require('tailwindcss/defaultTheme');
-
 module.exports = {
     purge: [
         './vendor/laravel/jetstream/**/*.blade.php',
@@ -10,7 +9,7 @@ module.exports = {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['Nunito', ...defaultTheme.fontFamily.sans],
+                sans: ['Nunito','Vazir', ...defaultTheme.fontFamily.sans],
             },
         },
     },
@@ -19,5 +18,23 @@ module.exports = {
         opacity: ['responsive', 'hover', 'focus', 'disabled'],
     },
 
-    plugins: [require('@tailwindcss/ui')],
+    plugins: [
+        require('@tailwindcss/ui'),
+        require('tailwindcss-rtl'),
+      ],
 };
+
+
+// module.exports = {
+//     purge: [],
+//     darkMode: false, // or 'media' or 'class'
+//     theme: {
+//               extend: {
+//                   fontFamily: {
+//                       sans: ['Nunito', ...defaultTheme.fontFamily.sans],
+//                   },
+//               },
+//           },
+//     variants: {},
+//     plugins: [],
+//   }

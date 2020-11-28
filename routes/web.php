@@ -1,5 +1,22 @@
 <?php
 
+
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BlockController;
+use App\Http\Controllers\BlogController;
+use App\Http\Controllers\BrandController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CommentController;
+use App\Http\Controllers\DetailController;
+use App\Http\Controllers\GroupController;
+use App\Http\Controllers\LikeController;
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\SaveController;
+use App\Http\Controllers\SearchController;
+use App\Http\Controllers\SpecController;
+use App\Http\Controllers\TagController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,3 +37,7 @@ Route::get('/', function () {
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
+
+
+Route::post('/project', [ProjectController::class, 'store']);
+Route::get('/project', [ProjectController::class, 'index']);

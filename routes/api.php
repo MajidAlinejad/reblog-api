@@ -39,7 +39,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 // project route
 Route::get('/app', [ProjectController::class, 'index']);
-Route::post('/project', [ProjectController::class, 'store']);
 
 //search route
 Route::get('/search/{id}', [SearchController::class, 'search']);
