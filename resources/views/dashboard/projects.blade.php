@@ -1,4 +1,13 @@
 @extends('dashboard')
+@section('title')
+<h2 class="items-baseline mx-4 my-0 text-xl font-semibold leading-tight text-gray-800">
+    <span class="align-middle"><ion-icon size="large" name="cube"></ion-icon></span>
+     پروژه
+</h2>
+
+ 
+@endsection
+
 @section('content')
 
 
@@ -11,8 +20,7 @@
 
         <div x-data="{ open: false }">
             <button @click="open = true"
-                class="inline-flex items-center justify-center px-4 py-2 text-base font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm whitespace-nowrap hover:bg-indigo-700">اضافه
-                کردن
+                class="inline-flex items-center justify-center px-2 py-2 text-base font-medium text-white bg-indigo-600 border border-transparent rounded-full shadow-sm whitespace-nowrap hover:bg-indigo-700"><ion-icon class="text-2xl" name="add-outline"></ion-icon>
             </button>
 
 
@@ -23,7 +31,7 @@
                         <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
                     </div>
                     <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-                    <div class="inline-block overflow-hidden text-left align-bottom transition-all transform bg-white rounded-lg shadow-xl sm:my-8 sm:align-middle sm:max-w-3xl sm:w-full"
+                    <div class="inline-block w-11/12 overflow-hidden text-left align-bottom transition-all transform bg-white rounded-lg shadow-xl sm:my-8 sm:align-middle sm:max-w-3xl sm:w-full "
                         role="dialog" aria-modal="true" aria-labelledby="modal-headline">
                         <form method="POST" enctype="multipart/form-data" action="/project">
                             <div class="px-4 pt-5 pb-4 bg-white sm:p-6 sm:pb-4">
@@ -105,7 +113,7 @@
                             <div class="px-4 py-3 bg-gray-50 sm:px-6 sm:flex sm:flex-row-reverse">
                                 <button type="submit"
                                     class="inline-flex justify-center w-full px-4 py-2 text-base font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm">
-                                    اضافه کردن
+                                    افزودن
                                 </button>
                                 <button type="button" @click="open = false"
                                     class="inline-flex justify-center w-full px-4 py-2 mt-3 text-base font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
@@ -190,7 +198,7 @@
                             </td>
 
                             <td class="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
-                                <a href="#" class="text-indigo-600 hover:text-indigo-900">ویرایش</a>
+                            <a href="/project/{{$item->id}}" class="text-indigo-600 hover:text-indigo-900">ویرایش</a>
                             </td>
                         </tr>
                         @endforeach

@@ -9,8 +9,16 @@ use Illuminate\Support\Facades\Response;
 
 class GroupController extends Controller
 {
+    public function read($id)
+    {
+        $group = Group::find($id);
+        return view('dashboard.group.group-edit')->with('group', $group);
+    }
+
     public function index()
     {
+        $groups = Group::all();
+        return view('dashboard.group.group')->with('groups', $groups);
     }
 
     public function all()
@@ -23,9 +31,22 @@ class GroupController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $request->validate([
+            'title' => 'required',
+            // 'img'=>'required',
+            // 'text'=>'required'
+        ]);
+        $group = new Group;
+        $group->text = $request->text;
+        $group->title = $request->title;
+        if ($request->file('img')) {
+            $spath = $request->file('img')->store('images');
+            $group->img = $spath;
+        }
+        $group->save();
+        return redirect('/groups')->with('message', 'با موفقیت اضافه شد.');
     }
     /**
      * Store a newly created resource in storage.
@@ -65,9 +86,22 @@ class GroupController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request, $id)
     {
-        //
+        $request->validate([
+            'title' => 'required',
+            // 'img'=>'required',
+            // 'text'=>'required'
+        ]);
+        $group = Group::find($id);
+        $group->text = $request->text;
+        $group->title = $request->title;
+        if ($request->file('img')) {
+            $spath = $request->file('img')->store('images');
+            $group->img = $spath;
+        }
+        $group->save();
+        return redirect('/groups')->with('message', 'با موفقیت آپدیت شد.');
     }
     /**
      * Update the specified resource in storage.
@@ -101,5 +135,12 @@ class GroupController extends Controller
     {
         $group = Group::find($id);
         $group->delete();
+    }
+
+    public function wipe($id)
+    {
+        $group = Group::find($id);
+        $group->delete();
+        return redirect('/groups')->with('message', 'با موفقیت حذف شد.');
     }
 }

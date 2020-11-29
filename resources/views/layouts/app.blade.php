@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" >
 
 <head>
     <meta charset="utf-8">
@@ -22,8 +22,8 @@
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.7.3/dist/alpine.js" defer></script>
 </head>
 
-<body class="font-sans antialiased" dir="rtl">
-    <div class="min-h-screen bg-gray-100">
+<body class="font-sans antialiased " dir="rtl">
+    <div class="min-h-screen bg-gray-100 ">
         @livewire('navigation-dropdown')
 
 
@@ -32,16 +32,15 @@
                 class="flex items-center flex-shrink-0 p-4 cursor-pointer close-icon text-cool-gray-500 hover:text-gray-400">
                 <ion-icon onclick="sideTg()" name="close-outline" size="large"></ion-icon>
             </div>
-            <h1 class="p-2 text-2xl text-cool-gray-300">منو کاربری</h1>
-            <div class="border-t-2 border-gray-400 link-ul">
+            <h1 class="p-2 mx-2 text-2xl text-cool-gray-300">منو کاربری</h1>
+            <div class="border-t border-gray-400 link-ul">
                 <ul class="pt-2 text-blue-100 ">
-                    <li class="hover:bg-cool-gray-600"><a href="/project" class="text-base"><ion-icon class="px-2" name="cube"></ion-icon>پروژه </a></li>
-                    <li class="hover:bg-cool-gray-600"><a href="/blog" class="text-base"><ion-icon class="px-2" name="flag"></ion-icon>بلاگ</a></li>
-                    <li class="hover:bg-cool-gray-600"><a href="/post" class="text-base"><ion-icon class="px-2" name="documents"></ion-icon>پست</a></li>
-                    <li class="hover:bg-cool-gray-600"><a href="/category" class="text-base"><ion-icon class="px-2" name="file-tray-stacked"></ion-icon>دسته بندی</a></li>
-                    <li class="hover:bg-cool-gray-600"><a href="/group" class="text-base"><ion-icon class="px-2" name="albums"></ion-icon>گروه</a></li>
-                    <li class="hover:bg-cool-gray-600"><a href="/brand" class="text-base"><ion-icon class="px-2" name="logo-facebook"></ion-icon>برند</a></li>
-                    <li class="hover:bg-cool-gray-600"><a href="/user" class="text-base"><ion-icon class="px-2" name="person"></ion-icon>کاربر</a></li>
+                    <li class="border-b border-gray-600 hover:bg-cool-gray-600"><a href="/project" class="block w-full text-base"><ion-icon class="px-2" name="cube"></ion-icon>پروژه </a></li>
+                    <li class="border-b border-gray-600 hover:bg-cool-gray-600"><a href="/blog" class="block w-full text-base"><ion-icon class="px-2" name="flag"></ion-icon>بلاگ</a></li>
+                    <li class="border-b border-gray-600 hover:bg-cool-gray-600"><a href="/category" class="block w-full text-base"><ion-icon class="px-2" name="file-tray-stacked"></ion-icon>دسته بندی</a></li>
+                    <li class="border-b border-gray-600 hover:bg-cool-gray-600"><a href="/groups" class="block w-full text-base"><ion-icon class="px-2" name="albums"></ion-icon>گروه</a></li>
+                    <li class="border-b border-gray-600 hover:bg-cool-gray-600"><a href="/brands" class="block w-full text-base"><ion-icon class="px-2" name="logo-facebook"></ion-icon>برند</a></li>
+                    <li class="border-b border-gray-600 hover:bg-cool-gray-600"><a href="/user" class="block w-full text-base"><ion-icon class="px-2" name="person"></ion-icon>کاربر</a></li>
                 </ul>
             </div>
 
@@ -51,10 +50,10 @@
 
 
         <!-- Page Content -->
-        <main>
-            <header class="bg-white shadow">
-                <div class="px-4 py-6 mx-auto max-w-7xl sm:px-6 lg:px-8">
-                    {{ $header }}
+        <main >
+            <header class="shadow bg-cool-gray-600 ">
+                <div class="px-4 py-1 mx-auto max-w-7xl sm:px-6 lg:px-8">
+                    {{-- {{ $header }} --}}
                 </div>
             </header>
             {{ $slot }}

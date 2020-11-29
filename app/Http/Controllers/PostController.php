@@ -14,29 +14,31 @@ use TeamTNT\TNTSearch\Indexer\TNTIndexer;
 
 class PostController extends Controller
 {
-    public function index()
+    public function index($id)
     {
+
+        $posts = Post::where('blog_id', $id)->orderBy('created_at', 'ASC')->paginate(30);
+        return view('dashboard.post.posts')->with('posts', $posts);
     }
 
     public function all($id)
     {
-       $per_page = \Request::get('per_page') ?: 30;
+        $per_page = \Request::get('per_page') ?: 30;
         $category = \Request::get('cat') ?: null;
         $rawtags = \Request::get('tags') ?: null;
 
         if ($rawtags) {
             $tags = explode(',', $rawtags);
-            $query = Post::whereHas('tags', function($q) use ($tags)
-            {
+            $query = Post::whereHas('tags', function ($q) use ($tags) {
                 $q->whereIn('id', $tags);
             });
             $query->where('blog_id', $id)->with('user');
-        }else{
+        } else {
             $query = Post::where('blog_id', $id)->with('user');
         }
         if ($category) {
-            $query->where('category_id',$category);
-        } 
+            $query->where('category_id', $category);
+        }
         //  if ($brand) {
         //     $query->whereIn('brand_id',$brand);
         // } 
@@ -44,89 +46,87 @@ class PostController extends Controller
         //  if ($price) {
         //     $query->whereBetween('price', [$price[0], $price[1]]);
         // }   
-        
+
         $posts = $query
-        ->orderBy('created_at', 'ASC')
-        ->paginate($per_page);
+            ->orderBy('created_at', 'ASC')
+            ->paginate($per_page);
     }
 
 
-    public function filter(Request $request,$id)
+    public function filter(Request $request, $id)
     {
-       $per_page = \Request::get('per_page') ?: 30;
+        $per_page = \Request::get('per_page') ?: 30;
         // $category = \Request::get('cat') ?: null;
         // $rawtags = \Request::get('tags') ?: null;
-       $arrange = 'DESC';
+        $arrange = 'DESC';
         if ($request->brands && count($request->brands)) {
-         $brands = $request->brands;
-         $brand = array_column($brands, 'key');
-        }else{
+            $brands = $request->brands;
+            $brand = array_column($brands, 'key');
+        } else {
             $brand = false;
         }
 
         if ($request->order) {
-         if ($request->order == 'costly') {
-         $order = 'price';
-             $arrange = 'DESC';
-
-         }else if ($request->order == 'cheap') {
-         $order = 'price';
-             $arrange = 'ASC';
-         }else{
-         $order = $request->order;
-         }
-        }else{
+            if ($request->order == 'costly') {
+                $order = 'price';
+                $arrange = 'DESC';
+            } else if ($request->order == 'cheap') {
+                $order = 'price';
+                $arrange = 'ASC';
+            } else {
+                $order = $request->order;
+            }
+        } else {
             $order = 'expire';
         }
 
 
-         if ($request->category ) {
-         $category = $request->category;
-        }else{
+        if ($request->category) {
+            $category = $request->category;
+        } else {
             $category = false;
         }
 
-         if ($request->tags && count($request->tags)) {
-         $tags = $request->tags;
-        }else{
+        if ($request->tags && count($request->tags)) {
+            $tags = $request->tags;
+        } else {
             $tags = false;
         }
 
         if ($request->price && count($request->price)) {
-         $price = $request->price;
-        }else{
+            $price = $request->price;
+        } else {
             $price = false;
         }
 
         if ($request->params && count($request->params)) {
-         $params = $request->params;
-        }else{
+            $params = $request->params;
+        } else {
             $params = false;
         }
-       
+
 
 
         $id = $request->id;
         if ($tags) {
             // $tags = explode(',', $rawtags);
-            $query = Post::whereHas('tags', function($q) use ($tags)
-            {
+            $query = Post::whereHas('tags', function ($q) use ($tags) {
                 $q->whereIn('id', $tags);
             });
             $query->where('blog_id', $id)->with('user');
-        }else{
+        } else {
             $query = Post::where('blog_id', $id)->with('user');
         }
         if ($category) {
-            $query->where('category_id',$category);
-        } 
-         if ($brand) {
-            $query->whereIn('brand_id',$brand);
-        } 
+            $query->where('category_id', $category);
+        }
+        if ($brand) {
+            $query->whereIn('brand_id', $brand);
+        }
 
-          if ($price) {
+        if ($price) {
             $query->whereBetween('price', [$price[0], $price[1]]);
-        }  
+        }
 
         if ($params) {
             // $query->whereHas('details', function($q) use ($params)
@@ -134,22 +134,22 @@ class PostController extends Controller
             //    $q->whereIn('spec_id',$params);
             // });
             // var_dump($query);
-           
+
             foreach ($params as $p => $value) {
-                $query->whereHas('details', function($q) use ($value){
-                   $q->whereIn('id',$value['param']);
+                $query->whereHas('details', function ($q) use ($value) {
+                    $q->whereIn('id', $value['param']);
                 });
             }
-        }  
-        
+        }
+
         $posts = $query
-        ->orderBy($order, $arrange)
-        ->paginate($per_page);
+            ->orderBy($order, $arrange)
+            ->paginate($per_page);
 
 
 
-       
-       
+
+
         return Response::json($posts);
     }
     /**
@@ -163,7 +163,7 @@ class PostController extends Controller
         $category = $post->category_id;
         $base = $post->blog->base;
         $blog_id = $post->blog->id;
-        return Response::json(compact('base','blog_id', 'category'));
+        return Response::json(compact('base', 'blog_id', 'category'));
     }
     /**
      * Store a newly created resource in storage.
@@ -267,18 +267,18 @@ class PostController extends Controller
         $post->cm = $cm;
         $post->brand =  $post->brand;
         $post->username = $username;
-        
-          // $breadcrumb = $breadcrumb->pluck('grandparent');
-         $bra = [];
-         do {
+
+        // $breadcrumb = $breadcrumb->pluck('grandparent');
+        $bra = [];
+        do {
             array_push($bra, [
-            'id'=> $breadcrumb[0]->id,
-            'text'=> $breadcrumb[0]->title,
+                'id' => $breadcrumb[0]->id,
+                'text' => $breadcrumb[0]->title,
             ]);
-           $breadcrumb = $breadcrumb->pluck('grandparent');
-         }while ( $breadcrumb[0] != null);
-        
-         $post->breadcrumb = array_reverse($bra);
+            $breadcrumb = $breadcrumb->pluck('grandparent');
+        } while ($breadcrumb[0] != null);
+
+        $post->breadcrumb = array_reverse($bra);
         // $post->b = $b;// be comment
         return Response::json($post);
     }

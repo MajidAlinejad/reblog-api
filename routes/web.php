@@ -39,5 +39,44 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 })->name('dashboard');
 
 
-Route::post('/project', [ProjectController::class, 'store']);
-Route::get('/project', [ProjectController::class, 'index']);
+Route::group(['middleware' => 'auth'], function () {
+
+
+    Route::post('/project', [ProjectController::class, 'create']);
+    Route::get('/project', [ProjectController::class, 'index']);
+    Route::put('/project/{id}', [ProjectController::class, 'edit']);
+    Route::get('/project/{id}', [ProjectController::class, 'read']);
+
+    Route::get('/blog', [BlogController::class, 'index']);
+    Route::post('/blog', [BlogController::class, 'create']);
+    Route::get('/blog/{id}', [BlogController::class, 'read']);
+    Route::put('/blog/{id}', [BlogController::class, 'edit']);
+    Route::delete('/blog/{id}', [BlogController::class, 'wipe']);
+
+    // 
+    Route::get('/posts/{id}', [PostController::class, 'index']);
+    // 
+
+    // 
+    Route::get('/brand/{id}', [BrandController::class, 'read']);
+    Route::get('/brands', [BrandController::class, 'index']);
+    Route::post('/brand', [BrandController::class, 'create']);
+    Route::put('/brand/{id}', [BrandController::class, 'edit']);
+    Route::delete('/brand/{id}', [BrandController::class, 'wipe']);
+    // 
+
+    Route::get('/group/{id}', [GroupController::class, 'read']);
+    Route::get('/groups', [GroupController::class, 'index']);
+    Route::post('/group', [GroupController::class, 'create']);
+    Route::put('/group/{id}', [GroupController::class, 'edit']);
+    Route::delete('/group/{id}', [GroupController::class, 'wipe']);
+
+    // 
+
+    Route::get('/category', [CategoryController::class, 'cats']);
+    Route::post('/category', [CategoryController::class, 'create']);
+    Route::delete('/category/{id}', [CategoryController::class, 'wipe']);
+    Route::put('/category/{id}', [CategoryController::class, 'edit']);
+
+    // 
+});
