@@ -45,9 +45,9 @@ Route::get('/search/{id}', [SearchController::class, 'search']);
 // blog route
 Route::get('/blog/{url}', [BlogController::class, 'show']);
 Route::get('/blogs', [BlogController::class, 'all']);
-// Route::post('/blog', [BlogController::class, 'store']);
-// Route::put('/blog/{id}', [BlogController::class, 'update']);
-// Route::delete('/blog/{id}', [BlogController::class, 'destroy']);
+Route::post('/blog', [BlogController::class, 'store']);
+Route::put('/blog/{id}', [BlogController::class, 'update']);
+Route::delete('/blog/{id}', [BlogController::class, 'destroy']);
 
 // group route
 Route::get('/group/{id}', [GroupController::class, 'show']);

@@ -14,24 +14,34 @@ class DetailController extends Controller
     public function index($id)
     {
         // $post = Post::find($id)->details()->get();
-        $post = Detail::whereHas('posts', function ($query)use($id) {
+        $post = Detail::whereHas('posts', function ($query) use ($id) {
             $query->where('post_id', $id);
         })->get();
         return Response::json($post);
     }
 
-    public function spec($id,$cat)
+
+    public function all($id)
+    {
+        // $post = Post::find($id);
+        $spec = Spec::find($id);
+        return view('dashboard.detail.index')
+            // ->with('post', $post)
+            ->with('spec', $spec);
+    }
+
+    public function spec($id, $cat)
     {
 
         $spec = Spec::where('cat_id', $cat)
-                    ->where('spec_id', null)
-                    ->with(['detSpec' => function($query)use ($id,$cat){
-                        $query->where('cat_id', $cat)->with(['details'=> function($query)use($id){
-                            $query->whereHas('posts', function ($query)use($id) {
-                                $query->where('post_id', $id);
-                            });
-                        }]);
-                    }])->get();
+            ->where('spec_id', null)
+            ->with(['detSpec' => function ($query) use ($id, $cat) {
+                $query->where('cat_id', $cat)->with(['details' => function ($query) use ($id) {
+                    $query->whereHas('posts', function ($query) use ($id) {
+                        $query->where('post_id', $id);
+                    });
+                }]);
+            }])->get();
         return Response::json($spec);
     }
 
@@ -39,8 +49,6 @@ class DetailController extends Controller
     {
         $detail = Detail::where('post_id', $id)->with('spec')->get();
         return Response::json($detail);
-
-        
     }
 
     /**
@@ -51,33 +59,92 @@ class DetailController extends Controller
     public function specs($id)
     {
         $spec = Spec::where('spec_id', null)
-                ->with(['detSpec' => function($query)use ($id){
-                    $query->with(['details'=> function($query)use($id){
-                        $query->where('post_id',$id);
-                    }]);
-                }])->get();
+            ->with(['detSpec' => function ($query) use ($id) {
+                $query->with(['details' => function ($query) use ($id) {
+                    $query->where('post_id', $id);
+                }]);
+            }])->get();
         return Response::json($spec);
     }
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+
+
+    public function create(Request $request)
+    {
+
+
+        $validator = Validator::make($request->all(), [
+            'value' => 'required',
+            // 'desc' => 'required',
+            // 'post_id' => 'required',
+            'spec_id' => 'required',
+        ]);
+
+        $detail = new Detail;
+        $detail->value = $request->value;
+        $detail->text = $request->text;
+        $detail->special = $request->special;
+        $detail->spec_id = $request->spec_id;
+        // return "done";
+
+        if ($validator->fails()) {
+            // return response()->json($validator->errors(), 422);
+            return back()->withErrors($validator->errors());
+        } else {
+            $detail->save();
+            $detail->posts()->attach($request->post_id);
+            return back()->with('message', 'با موفقیت اضافه شد.');
+            // return Response::json($detail);
+        }
+        // return $detail;
+    }
+
+
+
+    public function edit(Request $request, $id)
+    {
+
+
+        $validator = Validator::make($request->all(), [
+            'value' => 'required',
+            // 'desc' => 'required',
+            // 'post_id' => 'required',
+            // 'spec_id' => 'required',
+        ]);
+
+        $detail = Detail::find($id);
+        $detail->value = $request->value;
+        $detail->text = $request->text;
+        $detail->special = $request->special;
+        // $detail->spec_id = $request->spec_id;
+        // return "done";
+
+        if ($validator->fails()) {
+            // return response()->json($validator->errors(), 422);
+            return back()->withErrors($validator->errors());
+        } else {
+            $detail->save();
+            $detail->posts()->attach($request->post_id);
+            return back()->with('message', 'با موفقیت اضافه شد.');
+            // return Response::json($detail);
+        }
+        // return $detail;
+    }
+
+
+
     public function store(Request $request)
     {
 
         if ($request->id) {
 
-           $validator = Validator::make($request->all(), [
+            $validator = Validator::make($request->all(), [
                 'post_id' => 'required',
             ]);
-            $detail = Detail::find($request->id );
-            $detail->posts()->attach( $request->post_id);
+            $detail = Detail::find($request->id);
+            $detail->posts()->attach($request->post_id);
+        } else {
 
-        }else{
-
-             $validator = Validator::make($request->all(), [
+            $validator = Validator::make($request->all(), [
                 'value' => 'required',
                 // 'desc' => 'required',
                 // 'post_id' => 'required',
@@ -101,11 +168,17 @@ class DetailController extends Controller
                 $detail->posts()->attach($request->post_id);
 
                 return Response::json($detail);
-
             }
             return $detail;
         }
-       
+    }
+
+    public function connect($id, Request $request)
+    {
+        $post = Post::find($id);
+        $connect = $request->input('det');
+        $post->details()->sync($connect);
+        return redirect('/view/' . $id)->with('message', 'با موفقیت مرتبط شد.');
     }
     /**
      * Display the detailified resource.
@@ -124,10 +197,7 @@ class DetailController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
-        //
-    }
+
     /**
      * Update the detailified resource in storage.
      *

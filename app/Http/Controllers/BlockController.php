@@ -24,9 +24,37 @@ class BlockController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $request->validate([
+            'order' => 'required',
+            'post_id' => 'required',
+            // 'img'=>'required',
+            // 'text'=>'required'
+        ]);
+        $block = new Block;
+        $block->order = $request->order;
+        // $block->stream = $request->stream;
+        $block->title = $request->title;
+        // $block->special = $request->special;
+        $block->post_id = $request->post_id;
+        $block->text = $request->text;
+        if ($request->file('stream')) {
+            $spath = $request->file('stream')->store('stream');
+            $block->stream = $spath;
+        }
+        if ($request->file('special')) {
+            $spath = $request->file('special')->store('images');
+            $block->special = $spath;
+        }
+        if ($request->file('img')) {
+            $spath = $request->file('img')->store('images');
+            $block->img = $spath;
+        }
+        $block->save();
+        // return "done";
+        // return $block;
+        return back()->with('message', 'با موفقیت افزوده شد.');
     }
     /**
      * Store a newly created resource in storage.
@@ -71,9 +99,37 @@ class BlockController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request, $id)
     {
-        //
+        $request->validate([
+            'order' => 'required',
+            // 'post_id' => 'required',
+            // 'img'=>'required',
+            // 'text'=>'required'
+        ]);
+        $block = Block::find($id);
+        $block->order = $request->order;
+        // $block->stream = $request->stream;
+        $block->title = $request->title;
+        // $block->special = $request->special;
+        // $block->post_id = $request->post_id;
+        $block->text = $request->text;
+        if ($request->file('stream')) {
+            $spath = $request->file('stream')->store('stream');
+            $block->stream = $spath;
+        }
+        if ($request->file('special')) {
+            $spath = $request->file('special')->store('images');
+            $block->special = $spath;
+        }
+        if ($request->file('img')) {
+            $spath = $request->file('img')->store('images');
+            $block->img = $spath;
+        }
+        $block->save();
+        // return "done";
+        // return $block;
+        return back()->with('message', 'با موفقیت ویرایش شد.');
     }
     /**
      * Update the specified resource in storage.
@@ -93,7 +149,12 @@ class BlockController extends Controller
         $block = Block::find($id);
         $block->order = $request->order;
         $block->title = $request->title;
-        $block->stream = $request->stream;
+        if ($request->alt_stream) {
+            $block->stream = $request->alt_stream;
+        } else if ($request->file('stream')) {
+            $spath = $request->file('stream')->store('stream');
+            $block->stream = $spath;
+        }
         $block->special = $request->special;
         $block->post_id = $request->post_id;
         $block->text = $request->text;
@@ -112,5 +173,14 @@ class BlockController extends Controller
     {
         $block = Block::find($id);
         $block->delete();
+    }
+
+    public function wipe($id)
+    {
+        $block = Block::find($id);
+        $block->delete();
+        return back()->with('message', 'با موفقیت حذف شد.');
+
+        // return "done";
     }
 }

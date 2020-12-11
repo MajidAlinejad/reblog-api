@@ -31,10 +31,20 @@ class BrandController extends Controller
         return Response::json($brand);
     }
 
+    public function wire($id, Request $request)
+    {
+        $brand = Brand::find($id);
+        $wires = $request->input('cats');
+        $brand->categories()->sync($wires);
+        return redirect('/brands')->with('message', 'با موفقیت مرتبط شد.');
+    }
+
+
     public function index()
     {
-        $brands = Brand::all();
-        return view('dashboard.brand.brands')->with('brands', $brands);
+        $brands = Brand::where('id', '>', 0)->with('categories')->get();
+        $category = Category::where('category_id', '>', 0)->get();
+        return view('dashboard.brand.brands')->with('brands', $brands)->with('category', $category);
     }
 
     public function read($id)

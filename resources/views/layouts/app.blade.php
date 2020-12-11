@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" >
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
     <meta charset="utf-8">
@@ -18,7 +18,8 @@
 
 
     <!-- Scripts -->
-    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v27.0.2/dist/font-face.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v27.0.2/dist/font-face.css" rel="stylesheet"
+        type="text/css" />
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.7.3/dist/alpine.js" defer></script>
 </head>
 
@@ -35,12 +36,31 @@
             <h1 class="p-2 mx-2 text-2xl text-cool-gray-300">منو کاربری</h1>
             <div class="border-t border-gray-400 link-ul">
                 <ul class="pt-2 text-blue-100 ">
-                    <li class="border-b border-gray-600 hover:bg-cool-gray-600"><a href="/project" class="block w-full text-base"><ion-icon class="px-2" name="cube"></ion-icon>پروژه </a></li>
-                    <li class="border-b border-gray-600 hover:bg-cool-gray-600"><a href="/blog" class="block w-full text-base"><ion-icon class="px-2" name="flag"></ion-icon>بلاگ</a></li>
-                    <li class="border-b border-gray-600 hover:bg-cool-gray-600"><a href="/category" class="block w-full text-base"><ion-icon class="px-2" name="file-tray-stacked"></ion-icon>دسته بندی</a></li>
-                    <li class="border-b border-gray-600 hover:bg-cool-gray-600"><a href="/groups" class="block w-full text-base"><ion-icon class="px-2" name="albums"></ion-icon>گروه</a></li>
-                    <li class="border-b border-gray-600 hover:bg-cool-gray-600"><a href="/brands" class="block w-full text-base"><ion-icon class="px-2" name="logo-facebook"></ion-icon>برند</a></li>
-                    <li class="border-b border-gray-600 hover:bg-cool-gray-600"><a href="/user" class="block w-full text-base"><ion-icon class="px-2" name="person"></ion-icon>کاربر</a></li>
+                    <li class="border-b border-gray-600 hover:bg-cool-gray-600"><a href="/project"
+                            class="block w-full text-base">
+                            <ion-icon class="px-2" name="cube"></ion-icon>پروژه
+                        </a></li>
+                    <li class="border-b border-gray-600 hover:bg-cool-gray-600"><a href="/blog"
+                            class="block w-full text-base">
+                            <ion-icon class="px-2" name="flag"></ion-icon>بلاگ
+                        </a></li>
+                    <li class="border-b border-gray-600 hover:bg-cool-gray-600"><a href="/category"
+                            class="block w-full text-base">
+                            <ion-icon class="px-2" name="file-tray-stacked"></ion-icon>دسته بندی
+                        </a></li>
+
+                    <li class="border-b border-gray-600 hover:bg-cool-gray-600"><a href="/groups"
+                            class="block w-full text-base">
+                            <ion-icon class="px-2" name="albums"></ion-icon>گروه
+                        </a></li>
+                    <li class="border-b border-gray-600 hover:bg-cool-gray-600"><a href="/brands"
+                            class="block w-full text-base">
+                            <ion-icon class="px-2" name="logo-facebook"></ion-icon>برند
+                        </a></li>
+                    <li class="border-b border-gray-600 hover:bg-cool-gray-600"><a href="/user"
+                            class="block w-full text-base">
+                            <ion-icon class="px-2" name="person"></ion-icon>کاربر
+                        </a></li>
                 </ul>
             </div>
 
@@ -50,7 +70,7 @@
 
 
         <!-- Page Content -->
-        <main >
+        <main>
             <header class="shadow bg-cool-gray-600 ">
                 <div class="px-4 py-1 mx-auto max-w-7xl sm:px-6 lg:px-8">
                     {{-- {{ $header }} --}}

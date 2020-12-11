@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Spec;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
@@ -11,17 +12,14 @@ class SpecController extends Controller
 {
     public function index($id)
     {
-        // $spec = Spec::where('post_id', $id)->with('detail')->get();
-
-
-        // ->orderBy('created_at', 'ASC')
-        
-
-        // return Response::json($spec);
+        $category = Category::find($id);
+        $spec = Spec::where('cat_id', $id)->get();
+        $specs = Spec::where('cat_id', $id)->get();
+        return view('dashboard.spec.index')->with('spec', $spec)->with('specs', $specs)->with('category', $category);
     }
     public function details($id)
     {
-        $spec = Spec::where('cat_id', $id)->whereNotNull('spec_id')->where('filterize','1')->with('details')->get();
+        $spec = Spec::where('cat_id', $id)->whereNotNull('spec_id')->where('filterize', '1')->with('details')->get();
         return Response::json($spec);
     }
 
@@ -35,9 +33,31 @@ class SpecController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            // 'desc' => 'required',
+            'filterize' => 'required',
+            'cat_id' => 'required',
+            // 'spec_id' => 'required',
+        ]);
+
+
+
+        $spec = new Spec;
+        $spec->name = $request->name;
+        $spec->desc = $request->desc;
+        $spec->filterize = $request->filterize;
+        $spec->cat_id = $request->cat_id;
+        $spec->spec_id = $request->spec_id;
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator->errors());
+        } else {
+            $spec->save();
+            return redirect('/specs/' . $spec->cat_id)->with('message', 'با موفقیت اضافه شد.');
+        }
     }
     /**
      * Store a newly created resource in storage.
@@ -91,9 +111,31 @@ class SpecController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request, $id)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            // 'desc' => 'required',
+            'filterize' => 'required',
+            'cat_id' => 'required',
+            // 'spec_id' => 'required',
+        ]);
+
+
+
+        $spec = Spec::find($id);
+        $spec->name = $request->name;
+        $spec->desc = $request->desc;
+        $spec->filterize = $request->filterize;
+        $spec->cat_id = $request->cat_id;
+        $spec->spec_id = $request->spec_id;
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator->errors());
+        } else {
+            $spec->save();
+            return back()->with('message', 'با موفقیت اضافه شد.');
+        }
     }
     /**
      * Update the specified resource in storage.
@@ -131,5 +173,13 @@ class SpecController extends Controller
     {
         $spec = Spec::find($id);
         $spec->delete();
+    }
+
+
+    public function wipe($id)
+    {
+        $spec = Spec::find($id);
+        $spec->delete();
+        return back()->with('message', 'با موفقیت حذف شد.');
     }
 }
