@@ -14,30 +14,38 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
-
 class AuthController extends Controller
 {
+    /**
+     * Create a new AuthController instance.
+     *
+     * @return void
+     */
     public function __construct()
     {
         $this->middleware('auth:api', ['except' => ['login', 'register', 'refresh', 'me']]);
     }
 
     /**
-     * Get a JWT via given credentials.
+     * Get a JWT token via given credentials.
+     *
+     * @param  \Illuminate\Http\Request  $request
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function login()
+    public function login(Request $request)
     {
+
         $credentials = request(['email', 'password']);
 
-        if (!$token = auth()->attempt($credentials)) {
+        if (!$token = auth('api')->attempt($credentials)) {
             return response()->json(['error' => 'اطلاعات کاربری نادرست است'], 401);
         }
 
-        $user = auth()->user();
+        $user = auth('api')->user();
         return response()->json(compact('token', 'user'), 200);
     }
+
 
 
     public function register(Request $request)
@@ -65,23 +73,23 @@ class AuthController extends Controller
     }
 
     /**
-     * Get the authenticated User.
+     * Get the authenticated User
      *
      * @return \Illuminate\Http\JsonResponse
      */
     public function me()
     {
-        if (auth()->user()) {
+        if (auth('api')->user()) {
 
-            // return response()->json(auth()->user());
-            $id = auth()->user()->id;
+            // return response()->json(auth('api')->user());
+            $id = auth('api')->user()->id;
             $saves = Save::where('user_id', $id)
                 ->select('post_id')->pluck('post_id');
             $likes = Like::where('user_id', $id)
                 ->where('status', "1")->select('post_id')->pluck('post_id');
             $unlikes = Like::where('user_id', $id)
-            ->where('status', "-1")->select('post_id')->pluck('post_id');
-            $user = auth()->user();
+                ->where('status', "-1")->select('post_id')->pluck('post_id');
+            $user = auth('api')->user();
             $user->saves = $saves;
             $user->likes = $likes;
             $user->unlikes = $unlikes;
@@ -98,7 +106,7 @@ class AuthController extends Controller
      */
     public function logout()
     {
-        auth()->logout();
+        auth('api')->logout();
 
         return response()->json(['message' => 'Successfully logged out']);
     }
@@ -110,7 +118,7 @@ class AuthController extends Controller
      */
     public function refresh()
     {
-        return $this->respondWithToken(auth()->refresh());
+        return $this->respondWithToken(auth('api')->refresh());
     }
 
     /**
@@ -125,7 +133,17 @@ class AuthController extends Controller
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60
+            'expires_in' => auth('api')->factory()->getTTL() * 60
         ]);
+    }
+
+    /**
+     * Get the guard to be used during authentication.
+     *
+     * @return \Illuminate\Contracts\Auth\Guard
+     */
+    public function guard()
+    {
+        return Auth::guard();
     }
 }

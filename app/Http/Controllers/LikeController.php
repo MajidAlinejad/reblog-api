@@ -13,20 +13,20 @@ class LikeController extends Controller
     {
 
 
-         $validator = Validator::make($request->all(), [
+        $validator = Validator::make($request->all(), [
             'status' => 'required',
             // 'user_id'=>'required',
             'post_id' => 'required'
         ]);
 
-        if (Like::where('post_id',$request->post_id)->first()) {
-            $like =  Like::where('post_id',$request->post_id)->first();
-        }else{
+        if (Like::where('post_id', $request->post_id)->first()) {
+            $like =  Like::where('post_id', $request->post_id)->first();
+        } else {
             $like = new Like;
         }
 
-        
-        $id = auth()->user()->id;
+
+        $id = auth('api')->user()->id;
 
         $like->status = $request->status;
         $like->post_id = $request->post_id;
@@ -43,7 +43,7 @@ class LikeController extends Controller
 
     public function user()
     {
-        $user_id = auth()->user()->id;
+        $user_id = auth('api')->user()->id;
         $like = Like::where('user_id', $user_id)
             ->where('status', "1")->select('post_id')->get();
         return Response::json($like);
@@ -79,7 +79,7 @@ class LikeController extends Controller
      */
     public function likes()
     {
-        $id = auth()->user()->id;
+        $id = auth('api')->user()->id;
         $like = Like::where('user_id', $id)
             ->where('status', "1")->select('post_id')->pluck('post_id');
         // ->get();
@@ -100,7 +100,7 @@ class LikeController extends Controller
         ]);
 
         $like = new Like;
-        $id = auth()->user()->id;
+        $id = auth('api')->user()->id;
 
         $like->status = $request->status;
         $like->post_id = $request->post_id;
@@ -160,7 +160,7 @@ class LikeController extends Controller
      */
     public function destroy($id)
     {
-        $user_id = auth()->user()->id;
+        $user_id = auth('api')->user()->id;
         $like = Like::where('user_id', $user_id)
             ->where('status', "1")
             ->where('post_id', $id)

@@ -13,7 +13,7 @@ class SaveController extends Controller
         $validator = Validator::make($request->all(), [
             'post_id' => 'required'
         ]);
-        $id = auth()->user()->id;
+        $id = auth('api')->user()->id;
         $save = new Save();
         $save->post_id = $request->post_id;
         $save->user_id = $id;
@@ -28,7 +28,7 @@ class SaveController extends Controller
 
     public function saves()
     {
-        $id = auth()->user()->id;
+        $id = auth('api')->user()->id;
         $save = Save::where('user_id', $id)
             ->select('post_id')->pluck('post_id');
         return response()->json($save);
@@ -38,7 +38,7 @@ class SaveController extends Controller
 
     public function destroy($id)
     {
-        $user_id = auth()->user()->id;
+        $user_id = auth('api')->user()->id;
         $save = Save::where('user_id', $user_id)
             ->where('post_id', $id)
             ->delete();

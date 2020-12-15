@@ -149,3 +149,5 @@ Route::group([
     Route::post('refresh', [AuthController::class, 'refresh']);
     Route::post('me', [AuthController::class, 'me']);
 });
+
+// Route::middleware('api')->post('auth/login', [AuthController::class, 'login']);
