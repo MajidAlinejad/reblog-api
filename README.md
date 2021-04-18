@@ -9,4 +9,4 @@ In the project directory, you can run:
 
 ### `php artisan `
 
-every thing you need is : [laravel](https://laravel.com/) .
+every thing you need is : [laravel](https://laravel.com/).
