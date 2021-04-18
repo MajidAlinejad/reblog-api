@@ -65,7 +65,7 @@ class CommentController extends Controller
             $comment->comment_id = "0";
         }
         $comment->post_id = $request->post_id;
-        $id = auth()->user()->id;
+        $id =  auth('api')->user()->id;
         $comment->user_id = $id;
         // return "done";
         if ($validator->fails()) {
@@ -121,7 +121,7 @@ class CommentController extends Controller
         // $comment->unlike = $request->unlike;
         // $comment->comment_id = $request->comment_id;
         // $comment->post_id = $request->post_id;
-        $id = auth()->user()->id;
+        $id =  auth('api')->user()->id;
         $comment->user_id = $id;
 
         // return "done";

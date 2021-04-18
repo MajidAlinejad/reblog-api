@@ -41,7 +41,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::get('/app', [ProjectController::class, 'index']);
 
 //search route
-Route::get('/search/{id}', [SearchController::class, 'search']);
+Route::get('/search', [SearchController::class, 'search']);
+Route::get('/s', [SearchController::class, 'instantSearch']);
 // blog route
 Route::get('/blog/{url}', [BlogController::class, 'show']);
 Route::get('/blogs', [BlogController::class, 'all']);

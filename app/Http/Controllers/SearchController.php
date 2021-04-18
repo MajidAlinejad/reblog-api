@@ -21,8 +21,9 @@ class SearchController extends Controller
         $res = Post::search($key)->paginate(10);
         if (isset($res[0])) {
             return [
-                'didyoumean' => false,
-                'data'       => $res[0]
+                'didyoumean' => true,
+                'res'       => $res[0],
+                'guess'       => $this->getSuggestions($key)
             ];
         }
 
@@ -70,13 +71,16 @@ class SearchController extends Controller
 
         $keys = collect($res['ids'])->values()->all();
         $suggestions = Tag::whereIn('id', $keys)->get();
-        $tag = Tag::whereIn('id', $keys)->with('post')->get();
+        $tag = Tag::whereIn('id', $keys)->with('posts')->get();
+        // var_dump($tag);
         $related = new Collection();
         foreach ($tag as $tag) {
             $post = new stdClass;
-            $post->id = $tag->post[0]->id;
-            $post->title = $tag->post[0]->title;
-            $related->push($post);
+            if (isset($tag->post[0])) {
+                $post->id = $tag->post[0]->id;
+                $post->title = $tag->post[0]->title;
+                $related->push($post);
+            }
         }
 
         $suggestions->map(function ($tag) use ($key) {
